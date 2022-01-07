@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { SearchPayloadDto } from './dto/search.dto';
 import { JaknotService } from './jaknot.service';
 
 @Controller('jaknot')
@@ -10,8 +11,8 @@ export class JaknotController {
         return this.jaknotService.home();
     }
 
-    @Get('test')
-    test() {
-        return this.jaknotService.test();
+    @Get('search')
+    search(@Query() querySring: SearchPayloadDto) {
+        return this.jaknotService.search(querySring);
     }
 }
