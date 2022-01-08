@@ -1,10 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HelperService } from '@app/helper';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { SearchPayloadDto, SearchResponseInterface } from './dto/search.dto';
+import {
+    BranchCity,
+    SearchPayloadDto,
+    ResultSearchProduct,
+} from './dto/search.dto';
 
 @Injectable()
 export class JaknotService {
+
     private readonly logger = new Logger('JaknotService');
     private readonly USER_AGENT =
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0';
@@ -15,9 +21,13 @@ export class JaknotService {
 
     async search(
         querySring: SearchPayloadDto,
-    ): Promise<SearchResponseInterface[]> {
+    ): Promise<ResultSearchProduct[]> {
         try {
             const { query, branch } = querySring;
+
+            if (!HelperService.enumValueToArray(BranchCity).includes(branch)) {
+                throw new NotFoundException(`Branch ${branch} tidak ditemukan`);
+            }
 
             const url = `${process.env.BASE_URL_JAKNOT}search?key=${query}`;
 
@@ -27,13 +37,12 @@ export class JaknotService {
                     'User-Agent': this.USER_AGENT,
                     cookie: `selectedGroupBranch=${branch};`,
                 },
-                withCredentials: true,
             });
             const $ = cheerio.load(data);
 
             const resultSearch = $('.product-list');
 
-            const products: SearchResponseInterface[] = [];
+            const products: ResultSearchProduct[] = [];
             for (const product of resultSearch) {
                 const sku =
                     $(product).find('.product-list__sku').text().trim() ?? null;
@@ -119,13 +128,4 @@ export class JaknotService {
             throw new Error(error.message);
         }
     }
-}
-
-enum BranchCity {
-    Jabodetabek = 'jabodetabek',
-    Bandung = 'bandung',
-    Semarang = 'semarang',
-    Surabaya = 'surabaya',
-    Medan = 'medan',
-    Yogyakarta = 'yogyakarta',
 }
