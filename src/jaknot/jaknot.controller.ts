@@ -1,11 +1,11 @@
 import { HelperService } from '@app/helper';
-import { Controller, Get, Query, Res, Response } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import {
-    BranchCity,
-    SearchPayloadDto,
+    SearchQueryDto,
     SearchResponseInterface,
-} from './dto/search.dto';
+} from './models/search.models';
 import { JaknotService } from './jaknot.service';
+import { BranchCity } from './enums/search.enum';
 
 @Controller('jaknot')
 export class JaknotController {
@@ -18,10 +18,9 @@ export class JaknotController {
 
     @Get('search')
     async search(
-        @Query() querySring: SearchPayloadDto,
+        @Query() querySring: SearchQueryDto,
         @Res() response,
     ): Promise<SearchResponseInterface> {
-
         try {
             if (
                 querySring.branch &&

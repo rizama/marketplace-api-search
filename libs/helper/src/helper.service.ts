@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SearchResponseInterface } from 'src/jaknot/dto/search.dto';
+import { SearchResponseInterface } from 'src/jaknot/models/search.models';
 
 @Injectable()
 export class HelperService {

@@ -1,12 +1,10 @@
-import { HelperService } from '@app/helper';
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import {
-    BranchCity,
-    SearchPayloadDto,
+    SearchQueryDto,
     ResultSearchProduct,
-} from './dto/search.dto';
+} from './models/search.models';
 
 @Injectable()
 export class JaknotService {
@@ -20,14 +18,10 @@ export class JaknotService {
     }
 
     async search(
-        querySring: SearchPayloadDto,
+        querySring: SearchQueryDto,
     ): Promise<ResultSearchProduct[]> {
         try {
             const { query, branch } = querySring;
-
-            if (!HelperService.enumValueToArray(BranchCity).includes(branch)) {
-                throw new NotFoundException(`Branch ${branch} tidak ditemukan`);
-            }
 
             const url = `${process.env.BASE_URL_JAKNOT}search?key=${query}`;
 
