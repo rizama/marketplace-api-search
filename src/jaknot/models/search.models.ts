@@ -1,4 +1,6 @@
-export class SearchPayloadDto {
+import { BranchCity } from "../enums/search.enum";
+
+export class SearchQueryDto {
     query: string;
     branch: BranchCity;
 }
@@ -20,13 +22,4 @@ export interface ResultSearchProduct {
     priceReal: number;
     priceFinal: number;
     branchs: string[];
-}
-
-export enum BranchCity {
-    Jabodetabek = 'jabodetabek',
-    Bandung = 'bandung',
-    Semarang = 'semarang',
-    Surabaya = 'surabaya',
-    Medan = 'medan',
-    Yogyakarta = 'yogyakarta',
 }
