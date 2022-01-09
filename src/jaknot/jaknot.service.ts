@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { Filter } from './enums/search.enum';
 import {
     SearchQueryDto,
     ResultSearchProduct,
@@ -13,17 +14,17 @@ export class JaknotService {
     private readonly USER_AGENT =
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0';
 
-    home() {
-        return 'Welcome to Jakarta Notebook Scraper';
-    }
-
     async search(
         querySring: SearchQueryDto,
     ): Promise<ResultSearchProduct[]> {
         try {
-            const { query, branch } = querySring;
+            const { query, branch, show, sort, ready } = querySring;
 
-            const url = `${process.env.BASE_URL_JAKNOT}search?key=${query}`;
+            const str2 = ready.charAt(0).toUpperCase() + ready.slice(1);
+            const filterByAvailabaleInBranch = Filter[str2];
+            console.log(filterByAvailabaleInBranch)
+
+            const url = `${process.env.BASE_URL_JAKNOT}search?key=${query}&show=${show}&sort=${sort}&ready=${filterByAvailabaleInBranch}`;
 
             const { data } = await axios.get(url, {
                 headers: {
@@ -62,9 +63,10 @@ export class JaknotService {
                             .replace('%', ''),
                     ) ?? 0;
 
-                const rating =
-                    $(product).find('.product-list__desc').find('.ir').length ??
-                    0;
+                let rating =
+                    $(product).find('.product-list__desc').find('.ir').length ?? 0;
+                rating = rating > 1 ? rating : 0;
+
                 const description =
                     $(product)
                         .find('.product-list__desc')
@@ -115,7 +117,7 @@ export class JaknotService {
                     branchs,
                 });
             }
-            this.logger.debug('Finished');
+
             return products;
         } catch (error) {
             this.logger.debug('Error Service Search: ', error);

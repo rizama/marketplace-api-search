@@ -3,6 +3,9 @@ import { BranchCity } from "../enums/search.enum";
 export class SearchQueryDto {
     query: string;
     branch: BranchCity;
+    show: number;
+    sort: string;
+    ready: string;
 }
 
 export interface SearchResponseInterface {
