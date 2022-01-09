@@ -20,9 +20,8 @@ export class JaknotService {
         try {
             const { query, branch, show, sort, ready } = querySring;
 
-            const str2 = ready.charAt(0).toUpperCase() + ready.slice(1);
-            const filterByAvailabaleInBranch = Filter[str2];
-            console.log(filterByAvailabaleInBranch)
+            const formatFilter = ready.charAt(0).toUpperCase() + ready.slice(1);
+            const filterByAvailabaleInBranch = Filter[formatFilter];
 
             const url = `${process.env.BASE_URL_JAKNOT}search?key=${query}&show=${show}&sort=${sort}&ready=${filterByAvailabaleInBranch}`;
 
