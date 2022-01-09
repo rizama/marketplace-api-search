@@ -18,11 +18,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/helper": [
-        "libs/helper/src"
+      "utils/utils": [
+        "libs/utils/src"
       ],
-      "@app/helper/*": [
-        "libs/helper/src/*"
+      "utils/utils/*": [
+        "libs/utils/src/*"
       ]
     }
   }

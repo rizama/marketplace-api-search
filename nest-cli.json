@@ -2,13 +2,13 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "projects": {
-    "helper": {
+    "utils": {
       "type": "library",
-      "root": "libs/helper",
+      "root": "libs/utils",
       "entryFile": "index",
-      "sourceRoot": "libs/helper/src",
+      "sourceRoot": "libs/utils/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/helper/tsconfig.lib.json"
+        "tsConfigPath": "libs/utils/tsconfig.lib.json"
       }
     }
   },

@@ -11,7 +11,7 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "@app/helper/(.*)": "<rootDir>/../libs/helper/src/$1",
-    "@app/helper": "<rootDir>/../libs/helper/src"
+    "utils/utils/(.*)": "<rootDir>/../libs/utils/src/$1",
+    "utils/utils": "<rootDir>/../libs/utils/src"
   }
 }

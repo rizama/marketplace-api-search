@@ -74,7 +74,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/helper(|/.*)$": "<rootDir>/libs/helper/src/$1"
+      "^utils/utils(|/.*)$": "<rootDir>/libs/utils/src/$1"
     }
   }
 }
