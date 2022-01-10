@@ -6,9 +6,9 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const config = new DocumentBuilder()
         .setTitle('API Marketplace')
-        .setDescription('TAPI description')
+        .setDescription('API For Get Products Detail from Multiple Market Place')
         .setVersion('1.0')
-        .addTag('cats')
+        .addTag('jakartanotebook')
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);

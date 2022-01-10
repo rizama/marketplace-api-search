@@ -6,8 +6,10 @@ import {
 } from './models/search.models';
 import { JaknotService } from './jaknot.service';
 import { BranchCity } from './enums/search.enum';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('jaknot')
+@ApiTags('jakartanotebook')
 export class JaknotController {
     constructor(private readonly jaknotService: JaknotService) {}
 
