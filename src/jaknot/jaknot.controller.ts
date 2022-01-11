@@ -6,7 +6,7 @@ import {
 } from './models/search.models';
 import { JaknotService } from './jaknot.service';
 import { BranchCity } from './enums/search.enum';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('jaknot')
 @ApiTags('jakartanotebook')
@@ -14,11 +14,17 @@ export class JaknotController {
     constructor(private readonly jaknotService: JaknotService) {}
 
     @Get('/')
+    @ApiOkResponse({
+        description: 'Welcome Response'
+    })
     home() {
         return 'Welcome to Jakarta Notebook Scraper';
     }
 
     @Get('search')
+    @ApiOkResponse({
+        description: 'Search Endpoint for Jakarta Notebook'
+    })
     async search(
         @Query() querySring: SearchQueryDto,
         @Res() response,

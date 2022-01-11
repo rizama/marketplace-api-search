@@ -5,8 +5,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const config = new DocumentBuilder()
-        .setTitle('API Marketplace')
-        .setDescription('API For Get Products Detail from Multiple Market Place')
+        .setTitle('API Search Marketplace')
+        .setDescription('API For Search Products from Multiple Market Place')
         .setVersion('1.0')
         .addTag('jakartanotebook')
         .build();
