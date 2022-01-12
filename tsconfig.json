@@ -18,10 +18,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "utils/utils": [
+      "@utils/utils": [
         "libs/utils/src"
       ],
-      "utils/utils/*": [
+      "@utils/utils/*": [
         "libs/utils/src/*"
       ]
     }
