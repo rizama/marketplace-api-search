@@ -1,5 +1,8 @@
 {
     "version": 2,
+    "env": {
+        "BASE_URL_JAKNOT": "@base_url_jaknot"
+    },
     "builds": [
         {
             "src": "src/main.ts",
