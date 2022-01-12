@@ -1,4 +1,4 @@
-import { CommonUtils } from '@utils/utils';
+import { CommonUtils } from 'libs/utils/src/index';
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import {
     SearchQueryDto,
