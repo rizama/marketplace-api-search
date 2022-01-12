@@ -6,7 +6,7 @@ export class AppService {
         return {
             name: "API Search Marketplace",
             version: "1.0",
-            documentation: "endpoint/api"
+            documentation: "/api"
         };
     }
 }
