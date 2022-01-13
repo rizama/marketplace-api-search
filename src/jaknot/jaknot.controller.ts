@@ -60,4 +60,8 @@ export class JaknotController {
                 .json(CommonUtils.responseApi('error', message, []));
         }
     }
+
+    async detail() {
+        return 'detail products'
+    }
 }

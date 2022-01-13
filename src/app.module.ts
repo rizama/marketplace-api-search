@@ -5,8 +5,8 @@ import { AppService } from './app.service';
 import { JaknotModule } from './jaknot/jaknot.module';
 
 @Module({
-  imports: [JaknotModule, ConfigModule.forRoot()],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [JaknotModule, ConfigModule.forRoot()],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}
