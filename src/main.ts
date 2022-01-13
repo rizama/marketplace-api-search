@@ -9,6 +9,7 @@ async function bootstrap() {
         .setDescription('API For Search Products from Multiple Market Place')
         .setVersion('1.0')
         .addTag('jakartanotebook')
+        .addTag('shopee')
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
