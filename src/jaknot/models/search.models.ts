@@ -83,6 +83,7 @@ export interface ResultSearchProduct {
     sku: string;
     name: string;
     detail: string;
+    slug: string;
     image: string;
     discountPercent: number;
     rating: number;
