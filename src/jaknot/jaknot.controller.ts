@@ -1,5 +1,5 @@
 import { CommonUtils } from '../../libs/utils/src';
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import {
     SearchQueryDto,
     SearchResponseInterface,
@@ -7,6 +7,7 @@ import {
 import { JaknotService } from './jaknot.service';
 import { BranchCity } from './enums/search.enum';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { DetailParamDto } from './models/detail-product.models';
 
 @Controller('jaknot')
 @ApiTags('jakartanotebook')
@@ -15,15 +16,15 @@ export class JaknotController {
 
     @Get('/')
     @ApiOkResponse({
-        description: 'Welcome Response'
+        description: 'Welcome Response',
     })
     home() {
         return 'Welcome to Jakarta Notebook Scraper';
     }
 
-    @Get('search')
+    @Get('v1/search')
     @ApiOkResponse({
-        description: 'Search Endpoint for Jakarta Notebook'
+        description: 'Search Endpoint for Jakarta Notebook',
     })
     async search(
         @Query() querySring: SearchQueryDto,
@@ -47,7 +48,7 @@ export class JaknotController {
                     );
             }
 
-            const seaerchResult = await this.jaknotService.search(querySring);
+            const seaerchResult = await this.jaknotService.searchV1(querySring);
             return response
                 .status(200)
                 .json(CommonUtils.responseApi(200, 'success', seaerchResult));
@@ -61,7 +62,8 @@ export class JaknotController {
         }
     }
 
-    async detail() {
-        return 'detail products'
+    @Get('v1/detail/:slug')
+    async detail(@Param() params: DetailParamDto) {
+        return this.jaknotService.detailV1(params);
     }
 }
