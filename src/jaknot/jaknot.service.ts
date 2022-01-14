@@ -10,7 +10,7 @@ export class JaknotService {
     private readonly USER_AGENT =
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0';
 
-    async search(querySring: SearchQueryDto): Promise<ResultSearchProduct[]> {
+    async searchV1(querySring: SearchQueryDto): Promise<ResultSearchProduct[]> {
         try {
             const { query, branch, show, sort, ready } = querySring;
 
@@ -43,6 +43,8 @@ export class JaknotService {
                 const detail =
                     $(product).find('.product-list__title').attr('href') ??
                     null;
+
+                const slug = detail ? detail.split('/')[3] : null;
 
                 const image =
                     $(product)
@@ -104,6 +106,7 @@ export class JaknotService {
                     sku,
                     name,
                     detail,
+                    slug,
                     image,
                     discountPercent,
                     rating,
