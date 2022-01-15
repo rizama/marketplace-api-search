@@ -2,7 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { Filter } from './enums/search.enum';
-import { DetailParamDto } from './models/detail-product.models';
+import {
+    detailInfoInterface,
+    DetailParamDto,
+    DetailQueryStringDto,
+    ResultDetailProduct,
+} from './models/detail-product.models';
 import { SearchQueryDto, ResultSearchProduct } from './models/search.models';
 
 @Injectable()
@@ -125,61 +130,95 @@ export class JaknotService {
         }
     }
 
-    async detailV1(params: DetailParamDto) {
-        const { slug } = params;
+    async detailV1(
+        params: DetailParamDto,
+        query: DetailQueryStringDto,
+    ): Promise<ResultDetailProduct> {
+        try {
+            const { slug } = params;
+            const { branch } = query;
 
-        const url = `${process.env.BASE_URL_JAKNOT}/${slug}`;
+            const url = `${process.env.BASE_URL_JAKNOT}/${slug}`;
 
-        const { data } = await axios.get(url, {
-            headers: {
-                Accept: 'text/html,*/*',
-                'User-Agent': this.USER_AGENT,
-                cookie: `selectedGroupBranch=bandung;`,
-            },
-        });
+            const { data } = await axios.get(url, {
+                headers: {
+                    Accept: 'text/html,*/*',
+                    'User-Agent': this.USER_AGENT,
+                    cookie: `selectedGroupBranch=${branch};`,
+                },
+            });
 
-        const $ = cheerio.load(data);
+            const $ = cheerio.load(data);
 
-        const title = $('.title').find('span').text().trim();
+            const title = $('.title').find('span').text().trim();
 
-        let rating =
-            $('.detailInfo > div.reviewTop > div').find('.ir').length ?? 0;
-        rating = rating > 1 ? rating : 0;
+            let rating =
+                $('.detailInfo > div.reviewTop > div').find('.ir').length ?? 0;
+            rating = rating > 1 ? rating : 0;
 
-        const sku =
-            $('.detailInfo > dl > dd:nth-child(2)').text().trim() ?? null;
+            const sku =
+                $('.detailInfo > dl > dd:nth-child(2)').text().trim() ?? null;
 
-        const weight =
-            $('.detailInfo > dl > dd:nth-child(4)').text().trim() ?? null;
+            const weight =
+                $('.detailInfo > dl > dd:nth-child(4)').text().trim() ?? null;
 
-        const warranty =
-            $('.detailInfo > dl > dd:nth-child(6)').text().trim() ?? null;
+            const warranty =
+                $('.detailInfo > dl > dd:nth-child(6)').text().trim() ?? null;
 
-        const colorListHtml = $('.detailInfo > dl')
-            .find('.detailColor')
-            .find('li');
-        const colors = [];
-        for (const colorHtml of colorListHtml) {
-            const name = $(colorHtml).find('a').attr('title').trim() ?? null;
-            const otherProduct = $(colorHtml).find('a').attr('href').trim() ?? null;
-            const colorCode = $(colorHtml).find('a').attr('style').trim()?.split(":")[1] ?? null;
+            const colorListHtml = $('.detailInfo > dl')
+                .find('.detailColor')
+                .find('li');
+            const colors = [];
+            for (const colorHtml of colorListHtml) {
+                const name =
+                    $(colorHtml).find('a').attr('title').trim() ?? null;
+                const otherProduct =
+                    $(colorHtml).find('a').attr('href').trim() ?? null;
+                const colorCode =
+                    $(colorHtml)
+                        .find('a')
+                        .attr('style')
+                        .trim()
+                        ?.split(':')[1] ?? null;
 
-            colors.push({ name, otherProduct, colorCode });
+                colors.push({ name, otherProduct, colorCode });
+            }
+
+            const stockBranchHtml = $('.detailInfo > dl')
+                .find('.product-list__stock--branch')
+                .find('.product-list__stock');
+
+            const branchs = [];
+            for (const htmlBranch of stockBranchHtml) {
+                const branch = $(htmlBranch)
+                    .find('.product-list__stock__branch-name')
+                    .text()
+                    .trim();
+
+                const stock = $(htmlBranch)
+                    .attr('class')
+                    .trim()
+                    .includes('product-list__stock--ready')
+                    ? 'Tersedia'
+                    : 'Tidak Tersedia';
+
+                branchs.push({ branch, stock });
+            }
+
+            const detailInfo: detailInfoInterface = {
+                title,
+                rating,
+                sku,
+                weight,
+                warranty,
+                colors,
+                branchs,
+            };
+
+            return { detailInfo };
+        } catch (error) {
+            this.logger.debug('Error Service Detail: ', error);
+            throw new Error(error.message);
         }
-
-        const stockBranchHtml = $('.detailInfo > dl')
-        .find('.product-list__stock--branch')
-        .find('.product-list__stock');
-
-        const branchs = [];
-        for (const htmlBranch of stockBranchHtml) {
-            const branch = $(htmlBranch).find('.product-list__stock__branch-name').text().trim();
-
-            const stock = $(htmlBranch).attr('class').trim().includes('product-list__stock--ready') ? 'Tersedia' : 'Tidak Tersedia';
-
-            branchs.push({ branch, stock });
-        }
-
-        return { title, rating, sku, weight, warranty, colors, branchs };
     }
 }
