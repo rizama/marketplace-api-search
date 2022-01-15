@@ -27,14 +27,14 @@ export class JaknotController {
         description: 'Search Endpoint for Jakarta Notebook',
     })
     async search(
-        @Query() querySring: SearchQueryDto,
+        @Query() queryString: SearchQueryDto,
         @Res() response,
     ): Promise<SearchResponseInterface> {
         try {
             if (
-                querySring.branch &&
+                queryString.branch &&
                 !CommonUtils.enumValueToArray(BranchCity).includes(
-                    querySring.branch,
+                    queryString.branch,
                 )
             ) {
                 return response
@@ -42,13 +42,13 @@ export class JaknotController {
                     .json(
                         CommonUtils.responseApi(
                             404,
-                            `Branch ${querySring.branch} tidak ditemukan`,
+                            `Branch ${queryString.branch} tidak ditemukan`,
                             [],
                         ),
                     );
             }
 
-            const seaerchResult = await this.jaknotService.searchV1(querySring);
+            const seaerchResult = await this.jaknotService.searchV1(queryString);
             return response
                 .status(200)
                 .json(CommonUtils.responseApi(200, 'success', seaerchResult));
