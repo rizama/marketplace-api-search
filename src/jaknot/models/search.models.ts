@@ -90,5 +90,10 @@ export interface ResultSearchProduct {
     description: string;
     priceReal: number;
     priceFinal: number;
-    branchs: string[];
+    branchs: branch[];
+}
+
+export interface branch {
+    branch: string;
+    stock: string;
 }
