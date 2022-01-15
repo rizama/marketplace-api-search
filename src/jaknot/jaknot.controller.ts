@@ -7,7 +7,11 @@ import {
 import { JaknotService } from './jaknot.service';
 import { BranchCity } from './enums/search.enum';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { DetailParamDto } from './models/detail-product.models';
+import {
+    DetailParamDto,
+    DetailQueryStringDto,
+    DetailResponseInterface,
+} from './models/detail-product.models';
 
 @Controller('jaknot')
 @ApiTags('jakartanotebook')
@@ -63,7 +67,33 @@ export class JaknotController {
     }
 
     @Get('v1/detail/:slug')
-    async detail(@Param() params: DetailParamDto) {
-        return this.jaknotService.detailV1(params);
+    async detail(
+        @Param() params: DetailParamDto,
+        @Res() response,
+        @Query() queryString: DetailQueryStringDto,
+    ): Promise<DetailResponseInterface> {
+        try {
+            if (
+                queryString.branch &&
+                !CommonUtils.enumValueToArray(BranchCity).includes(
+                    queryString.branch,
+                )
+            ) {
+                return response
+                    .status(404)
+                    .json(
+                        CommonUtils.responseApi(
+                            404,
+                            `Branch ${queryString.branch} tidak ditemukan`,
+                            [],
+                        ),
+                    );
+            }
+
+            const detailResult = await this.jaknotService.detailV1(params, queryString);
+            return response
+                .status(200)
+                .json(CommonUtils.responseApi(200, 'success', detailResult));
+        } catch (error) {}
     }
 }
