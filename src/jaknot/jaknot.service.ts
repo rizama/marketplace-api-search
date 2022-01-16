@@ -217,8 +217,8 @@ export class JaknotService {
             const detailGallery: detailGalleryInterface[] = [];
             for (const gallery of detailGalleryWrapper) {
                 detailGallery.push({
-                    name: $(gallery).find('img').attr('src').trim() ?? null,
-                    link: $(gallery).attr('title').trim() ?? null,
+                    name: $(gallery).attr('title').trim() ?? null,
+                    link: $(gallery).find('img').attr('src').trim() ?? null,
                 });
             }
 
