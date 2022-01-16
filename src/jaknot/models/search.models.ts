@@ -61,7 +61,7 @@ export class SearchQueryDto {
             'bandung',
             'jakartabarat',
             'jakartautara',
-            'cikpua',
+            'cikapua',
             'tangerang',
             'semarang',
             'surabayatimur',

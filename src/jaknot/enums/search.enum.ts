@@ -14,7 +14,7 @@ export enum Filter {
     bandung = 'kmeGKL',
     jakartabarat = 'rz5DK2',
     jakartautara = 'GmLpmq',
-    cikpua = 'ezZ7xm',
+    cikapua = 'ezZ7xm',
     tangerang = 'gKBkzB',
     semarang = 'My1Lml',
     surabayatimur = 'wygMzX',
