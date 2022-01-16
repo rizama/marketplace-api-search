@@ -11,6 +11,20 @@ export class DetailParamDto {
 }
 
 export class DetailQueryStringDto {
+    @ApiProperty({
+        type: String,
+        description: 'Branch in City',
+        required: false,
+        enumName: 'Available Branch',
+        enum: [
+            'bandung',
+            'jabodetabek',
+            'surabaya',
+            'yogyakarta',
+            'semarang',
+            'medan',
+        ],
+    })
     branch: string;
 }
 
