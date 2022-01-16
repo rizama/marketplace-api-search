@@ -3,8 +3,10 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { Filter } from './enums/search.enum';
 import {
+    detailGalleryInterface,
     detailInfoInterface,
     DetailParamDto,
+    detailPriceInterface,
     DetailQueryStringDto,
     ResultDetailProduct,
 } from './models/detail-product.models';
@@ -150,30 +152,25 @@ export class JaknotService {
 
             const $ = cheerio.load(data);
 
+            // Detail Information
             const title = $('.title').find('span').text().trim();
 
-            let rating =
-                $('.detailInfo > div.reviewTop > div').find('.ir').length ?? 0;
+            let rating = $('.detailInfo > div.reviewTop > div').find('.ir').length ?? 0;
             rating = rating > 1 ? rating : 0;
 
-            const sku =
-                $('.detailInfo > dl > dd:nth-child(2)').text().trim() ?? null;
+            const sku = $('.detailInfo > dl > dd:nth-child(2)').text().trim() ?? null;
 
-            const weight =
-                $('.detailInfo > dl > dd:nth-child(4)').text().trim() ?? null;
+            const weight = $('.detailInfo > dl > dd:nth-child(4)').text().trim() ?? null;
 
-            const warranty =
-                $('.detailInfo > dl > dd:nth-child(6)').text().trim() ?? null;
+            const warranty = $('.detailInfo > dl > dd:nth-child(6)').text().trim() ?? null;
 
             const colorListHtml = $('.detailInfo > dl')
                 .find('.detailColor')
                 .find('li');
             const colors = [];
             for (const colorHtml of colorListHtml) {
-                const name =
-                    $(colorHtml).find('a').attr('title').trim() ?? null;
-                const otherProduct =
-                    $(colorHtml).find('a').attr('href').trim() ?? null;
+                const name = $(colorHtml).find('a').attr('title').trim() ?? null;
+                const otherProduct = $(colorHtml).find('a').attr('href').trim() ?? null;
                 const colorCode =
                     $(colorHtml)
                         .find('a')
@@ -215,7 +212,31 @@ export class JaknotService {
                 branchs,
             };
 
-            return { detailInfo };
+            // Detail Gallery
+            const detailGalleryWrapper = $('.detailGalleryWrapper').find('a');
+            const detailGallery: detailGalleryInterface[] = [];
+            for (const gallery of detailGalleryWrapper) {
+                detailGallery.push({
+                    name: $(gallery).find('img').attr('src').trim() ?? null,
+                    link: $(gallery).attr('title').trim() ?? null,
+                });
+            }
+
+            // Detail Price
+            const detailPriceWrapper = $('.detailPrice');
+
+            const normalPrice = +$(detailPriceWrapper).find('.price-false').text().trim().replace(/[\.a-zA-Z\s]+/g, '') ?? 0;
+            const price = +$(detailPriceWrapper).find('.price-final').text().trim().replace(/[\.a-zA-Z\s]+/g, '') ?? 0;
+            
+            const priceDiscPercent = $(detailPriceWrapper).find('.price-disc').text().trim().split("-");
+            const discountPrice = +priceDiscPercent[0].trim().replace(/[\.\,a-zA-Z\s]+/g, '') ?? 0;
+            const discountPercent = +priceDiscPercent[1].trim().replace(/[\(\)\%a-zA-Z\s]+/g, '') ?? 0;
+
+            const detailPrice: detailPriceInterface = {
+                normalPrice, price, discountPrice, discountPercent
+            }
+
+            return { detailInfo, detailGallery, detailPrice };
         } catch (error) {
             this.logger.debug('Error Service Detail: ', error);
             throw new Error(error.message);

@@ -22,6 +22,8 @@ export interface DetailResponseInterface {
 
 export interface ResultDetailProduct {
     detailInfo: detailInfoInterface;
+    detailGallery: detailGalleryInterface[];
+    detailPrice: detailPriceInterface;
 }
 
 export interface detailInfoInterface {
@@ -38,4 +40,16 @@ export interface color {
     name: string;
     otherProducts: string;
     colorCode: string;
+}
+
+export interface detailGalleryInterface {
+    name: string;
+    link: string;
+}
+
+export interface detailPriceInterface {
+    normalPrice: number;
+    discountPrice: number;
+    discountPercent: number;
+    price: number;
 }
