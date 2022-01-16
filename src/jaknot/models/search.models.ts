@@ -33,7 +33,7 @@ export class SearchQueryDto {
         default: 40,
         example: 40,
         enumName: 'Available Limit Products',
-        enum: [40, 60, 90],
+        enum: [40, 60, 100],
     })
     show: number;
 
