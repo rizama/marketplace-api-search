@@ -6,7 +6,7 @@ export class AppService {
         return {
             name: "API Search Marketplace",
             version: "1.0",
-            documentation: "/api"
+            documentation: process.env.APP_MODE === 'development' ? 'http://localhost:3000/api' : 'https://marketplace-api-search-rizama.vercel.app/api'
         };
     }
 }
