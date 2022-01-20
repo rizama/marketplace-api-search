@@ -52,7 +52,7 @@ export class JaknotController {
                     );
             }
 
-            const seaerchResult = await this.jaknotService.searchV1(queryString);
+            const seaerchResult = await this.jaknotService.searchJaknot(queryString);
             return response
                 .status(200)
                 .json(CommonUtils.responseApi(200, 'success', seaerchResult));
@@ -90,7 +90,7 @@ export class JaknotController {
                     );
             }
 
-            const detailResult = await this.jaknotService.detailV1(params, queryString);
+            const detailResult = await this.jaknotService.detailJaknot(params, queryString);
             return response
                 .status(200)
                 .json(CommonUtils.responseApi(200, 'success', detailResult));

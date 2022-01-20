@@ -10,7 +10,7 @@ export class JaknotService {
     private readonly logger = new Logger('JaknotService');
     private readonly USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0';
 
-    async searchV1(querySring: SearchQueryDto): Promise<ResultSearchProduct[]> {
+    async searchJaknot(querySring: SearchQueryDto): Promise<ResultSearchProduct[]> {
         try {
             const { query, branch, show, sort, ready } = querySring;
 
@@ -97,7 +97,7 @@ export class JaknotService {
         }
     }
 
-    async detailV1(params: DetailParamDto, query: DetailQueryStringDto): Promise<ResultDetailProduct> {
+    async detailJaknot(params: DetailParamDto, query: DetailQueryStringDto): Promise<ResultDetailProduct> {
         try {
             const { slug } = params;
             const { branch } = query;
