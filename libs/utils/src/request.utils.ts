@@ -2,8 +2,7 @@ import axios from 'axios';
 import { SearchResponseInterface } from 'src/jaknot/models/search.models';
 
 export abstract class RequestUtils {
-    private readonly USER_AGENT =
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0';
+    private readonly USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0';
 
     static responseApi(status, message, data) {
         const result: SearchResponseInterface = {};
@@ -15,11 +14,15 @@ export abstract class RequestUtils {
         return result;
     }
 
-    static async getRequest(url: string, headers?: any, options?: any) {
+    static async getRequest(url: string, headers?: any) {
         try {
-            const { data } = await axios.get(url, {
-                headers,
-            });
+            const options = {};
+
+            if (headers) {
+                options['headers'] = headers;
+            }
+
+            const { data } = await axios.get(url, options);
 
             return data;
         } catch (error) {
