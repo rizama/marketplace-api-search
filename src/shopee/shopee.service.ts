@@ -10,9 +10,9 @@ export class ShopeeService {
 
     async searchShopee(searchQueryShopeeDto: SearchQueryShopeeDto) {
         try {
-            const { sortBy, keyword } = searchQueryShopeeDto;
+            const { sortBy, keyword, limit, order } = searchQueryShopeeDto;
 
-            const url = `${process.env.BASE_URL_SHOPEE}search/search_items?by=${sortBy}&keyword=${keyword}&limit=60&newest=0&order=desc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2`;
+            const url = `${process.env.BASE_URL_SHOPEE}search/search_items?by=${sortBy}&keyword=${keyword}&limit=${limit}&newest=0&order=${order}&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2`;
             const headers = {
                 Accept: 'text/html,*/*',
                 'User-Agent': this.USER_AGENT
