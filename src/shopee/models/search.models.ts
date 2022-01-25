@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class SearchQueryShopeeDto {
     @ApiProperty({
@@ -7,39 +7,49 @@ export class SearchQueryShopeeDto {
         required: false,
     })
     sortBy: string;
-    
+
     @ApiProperty({
         type: String,
         description: 'Keyword Search',
         required: false,
     })
     keyword: string;
-    
+
     @ApiProperty({
         type: Number,
         description: 'Limit Show Product',
         required: false,
+        example: 60,
+        default: 60,
     })
     limit: number;
 
     @ApiProperty({
         type: Number,
-        description: 'Is Newest or Oldest',
+        description: 'For Skip Result',
         required: false,
+        example: 0,
+        default: 0,
     })
     newest: number;
-    
+
     @ApiProperty({
         type: String,
-        description: 'Order',
+        description: 'Order Product',
         required: false,
+        example: 'asc',
+        enumName: 'Order Product',
+        enum: ['asc', 'desc'],
     })
     order: string;
 
     @ApiProperty({
-        type: String,
+        type: Number,
         description: 'Filter by Rating',
         required: false,
+        example: 5,
+        enumName: 'Filter by Rating',
+        enum: [1, 2, 3, 4, 5],
     })
     ratingFilter: string;
 }
