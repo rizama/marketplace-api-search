@@ -53,3 +53,16 @@ export class SearchQueryShopeeDto {
     })
     ratingFilter: string;
 }
+
+export interface SearchResponseInterface {
+    status?: string;
+    data?: ResultSearchProduct[];
+    message?: string;
+}
+
+export interface ResultSearchProduct {
+    itemId: number;
+    shopId: number;
+    name: string;
+    images: string[];
+}
