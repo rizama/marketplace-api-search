@@ -11,7 +11,7 @@ export class SearchQueryShopeeDto {
     @ApiProperty({
         type: String,
         description: 'Keyword Search',
-        required: false,
+        required: true,
     })
     keyword: string;
 
@@ -65,4 +65,14 @@ export interface ResultSearchProduct {
     shopId: number;
     name: string;
     images: string[];
+    currency: string;
+    stock: number;
+    price: number;
+    priceBeforeDiscount: number;
+    priceMin: number;
+    priceMax: number;
+    priceMinBeforeDiscount: number;
+    priceMaxBeforeDiscount: number;
+    discountPercent: number;
+    rating: number;
 }
