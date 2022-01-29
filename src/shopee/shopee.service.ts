@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RequestUtils } from '@utils/utils';
+import { RequestUtils, CommonUtils } from '@utils/utils';
 import { ResultSearchProduct, SearchQueryShopeeDto } from './models/search.models';
 
 @Injectable()
@@ -17,30 +17,53 @@ export class ShopeeService {
 
             const requestData = await RequestUtils.getRequest(url, headers);
 
-            if (!requestData && !requestData.items) {
+            if (!requestData || !requestData.items) {
                 return [];
             }
 
             const resultSearchProduct: ResultSearchProduct[] = [];
             for (const item of requestData.items) {
-                const itemId = item.item_basic.itemid;
-                const shopId = item.item_basic.shopid;
-                const name = item.item_basic.name;
-                const images = item.item_basic.images.map((image) => {
-                    return `https://cf.shopee.co.id/file/${image}`;
-                });
+                const itemId = CommonUtils.verifyValue(item.item_basic.itemid);
+                const shopId = CommonUtils.verifyValue(item.item_basic.shopid);
+                const name = CommonUtils.verifyValue(item.item_basic.name);
+                const images = CommonUtils.isArrayAndNotEmpty(item.item_basic.images)
+                    ? item.item_basic.images.map((image) => {
+                        return `https://cf.shopee.co.id/file/${image}`;
+                    })
+                    : [];
+                // TODO: Get Harga, disc, rating, dll
+                const currency = CommonUtils.verifyValue(item.item_basic.currency);
+                const stock = CommonUtils.verifyValue(item.item_basic.stock);
+                const price = !CommonUtils.isUndefinedOrNan(item.item_basic.price_before_discount) ? item.item_basic.price_before_discount / 100000 : 0;
+                const priceBeforeDiscount = !CommonUtils.isUndefinedOrNan(item.item_basic.price) ? item.item_basic.price / 100000 : 0;
+                const priceMin = !CommonUtils.isUndefinedOrNan(item.item_basic.price_min) ? item.item_basic.price_min / 100000 : 0;
+                const priceMax = !CommonUtils.isUndefinedOrNan(item.item_basic.price_max) ? item.item_basic.price_max / 100000 : 0;
+                const priceMinBeforeDiscount = !CommonUtils.isUndefinedOrNan(item.item_basic.price_min_before_discount) ? item.item_basic.price_min_before_discount > 0 ? item.item_basic.price_min_before_discount / 100000 : item.item_basic.price_min_before_discount : 0;
+                const priceMaxBeforeDiscount = !CommonUtils.isUndefinedOrNan(item.item_basic.price_max_before_discount) ? item.item_basic.price_max_before_discount > 0 ? item.item_basic.price_max_before_discount / 100000 : item.item_basic.price_max_before_discount : 0;
+                const discountPercent = !CommonUtils.isUndefinedOrNan(item.item_basic.raw_discount) ? item.item_basic.raw_discount : 0;
+                const rating = !CommonUtils.isUndefinedOrNan(item.item_basic.item_rating.rating_star) ? item.item_basic.item_rating.rating_star : 0;
 
                 resultSearchProduct.push({
                     itemId,
                     shopId,
                     name,
                     images,
+                    currency,
+                    stock,
+                    price,
+                    priceBeforeDiscount,
+                    priceMin,
+                    priceMax,
+                    priceMinBeforeDiscount,
+                    priceMaxBeforeDiscount,
+                    discountPercent,
+                    rating
                 });
             }
 
             return resultSearchProduct;
         } catch (error) {
-            this.logger.debug('Error Service Search: ', error);
+            this.logger.debug(`ERROR_SHOPEE_SEARCH: ${error}`);
             throw new Error(error.message);
         }
     }
