@@ -34,13 +34,13 @@ export class ShopeeService {
                 // TODO: Get Harga, disc, rating, dll
                 const currency = CommonUtils.verifyValue(item.item_basic.currency);
                 const stock = CommonUtils.verifyValue(item.item_basic.stock);
+                const discountPercent = !CommonUtils.isUndefinedOrNan(item.item_basic.raw_discount) ? item.item_basic.raw_discount : 0;
                 const price = !CommonUtils.isUndefinedOrNan(item.item_basic.price_before_discount) ? item.item_basic.price_before_discount / 100000 : 0;
                 const priceBeforeDiscount = !CommonUtils.isUndefinedOrNan(item.item_basic.price) ? item.item_basic.price / 100000 : 0;
                 const priceMin = !CommonUtils.isUndefinedOrNan(item.item_basic.price_min) ? item.item_basic.price_min / 100000 : 0;
                 const priceMax = !CommonUtils.isUndefinedOrNan(item.item_basic.price_max) ? item.item_basic.price_max / 100000 : 0;
-                const priceMinBeforeDiscount = !CommonUtils.isUndefinedOrNan(item.item_basic.price_min_before_discount) ? item.item_basic.price_min_before_discount > 0 ? item.item_basic.price_min_before_discount / 100000 : item.item_basic.price_min_before_discount : 0;
-                const priceMaxBeforeDiscount = !CommonUtils.isUndefinedOrNan(item.item_basic.price_max_before_discount) ? item.item_basic.price_max_before_discount > 0 ? item.item_basic.price_max_before_discount / 100000 : item.item_basic.price_max_before_discount : 0;
-                const discountPercent = !CommonUtils.isUndefinedOrNan(item.item_basic.raw_discount) ? item.item_basic.raw_discount : 0;
+                const priceMinBeforeDiscount = item.item_basic.discount ? item.item_basic.price_min_before_discount / 100000 : item.item_basic.price_min_before_discount;
+                const priceMaxBeforeDiscount = item.item_basic.discount ? item.item_basic.price_max_before_discount / 100000 : item.item_basic.price_max_before_discount;
                 const rating = !CommonUtils.isUndefinedOrNan(item.item_basic.item_rating.rating_star) ? item.item_basic.item_rating.rating_star : 0;
 
                 resultSearchProduct.push({
@@ -57,7 +57,7 @@ export class ShopeeService {
                     priceMinBeforeDiscount,
                     priceMaxBeforeDiscount,
                     discountPercent,
-                    rating
+                    rating,
                 });
             }
 
