@@ -69,7 +69,16 @@ export class ShopeeService {
     }
 
     generateUrl(options) {
-        const url = `${process.env.BASE_URL_SHOPEE}search/search_items?by=${options.sortBy}&keyword=${options.keyword}&limit=${options.limit}&newest=${options.newest}&order=${options.order}&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2`;
+        let url = `${process.env.BASE_URL_SHOPEE}search/search_items?`;
+
+        if (options.sortBy) url += `by=${options.sortBy}&`;
+        if (options.keyword) url += `keyword=${options.keyword}&`;
+        if (options.limit) url += `limit=${options.limit}&`;
+        if (options.newest) url += `newest=${options.newest}&`;
+        if (options.order) url += `order=${options.order}&`;
+        if (options.locations) url += `locations=${options.locations}&`;
+
+        url += 'page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2';
 
         return url;
     }
