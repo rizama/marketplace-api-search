@@ -31,7 +31,6 @@ export class ShopeeService {
                         return `https://cf.shopee.co.id/file/${image}`;
                     })
                     : [];
-                // TODO: Get Harga, disc, rating, dll
                 const currency = CommonUtils.verifyValue(item.item_basic.currency);
                 const stock = CommonUtils.verifyValue(item.item_basic.stock);
                 const discountPercent = !CommonUtils.isUndefinedOrNan(item.item_basic.raw_discount) ? item.item_basic.raw_discount : 0;
