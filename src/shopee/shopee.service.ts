@@ -26,11 +26,7 @@ export class ShopeeService {
                 const itemId = CommonUtils.verifyValue(item.item_basic.itemid);
                 const shopId = CommonUtils.verifyValue(item.item_basic.shopid);
                 const name = CommonUtils.verifyValue(item.item_basic.name);
-                const images = CommonUtils.isArrayAndNotEmpty(item.item_basic.images)
-                    ? item.item_basic.images.map((image) => {
-                        return `https://cf.shopee.co.id/file/${image}`;
-                    })
-                    : [];
+                const images = this.generateUrlImage(item.item_basic.images);
                 const currency = CommonUtils.verifyValue(item.item_basic.currency);
                 const stock = CommonUtils.verifyValue(item.item_basic.stock);
                 const discountPercent = !CommonUtils.isUndefinedOrNan(item.item_basic.raw_discount) ? item.item_basic.raw_discount : 0;
@@ -80,5 +76,13 @@ export class ShopeeService {
         url += 'page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2';
 
         return url;
+    }
+
+    generateUrlImage(images) {
+        return CommonUtils.isArrayAndNotEmpty(images)
+            ? images.map((image) => {
+                return `https://cf.shopee.co.id/file/${image}`;
+            })
+            : [];
     }
 }
