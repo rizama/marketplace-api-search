@@ -45,6 +45,10 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Documentation Swagger
+After run the apps, please visit 
+$ http://localhost:3000/api/
+
 ## Test
 
 ```bash
